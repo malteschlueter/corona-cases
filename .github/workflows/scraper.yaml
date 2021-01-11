@@ -1,0 +1,47 @@
+name: Scrap, commit and push
+
+on:
+    workflow_dispatch:
+    workflow_run:
+        workflows:
+            - 'Tests'
+        branches:
+            - 'main'
+        types:
+            - 'completed'
+    schedule:
+        - cron: '7 * * * *'
+
+jobs:
+    scrap-data:
+        if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Cache Composer packages
+                id: composer-cache
+                uses: actions/cache@v2
+                with:
+                    path: vendor
+                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-
+
+            -   name: Install php dependencies
+                run: composer install --optimize-autoloader --no-dev --prefer-dist --no-progress
+
+            -   name: Clear cache
+                run: php bin/console cache:clear
+
+            -   name: Scrap corona cases
+                run: php bin/console app:fetch-corona-cases
+
+            -   name: Commit and push if it changed
+                run: |-
+                    git config user.name "Automated"
+                    git config user.email "actions@users.noreply.github.com"
+                    timestamp=$(date "+%Y-%m-%d")
+                    # the commands after the || only run if git diff detects any changes
+                    git diff --quiet || git add data/corona && git commit -m "Update cases ${timestamp}" && true
+                    git push
