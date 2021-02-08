@@ -3,8 +3,8 @@
         "incidence_new_infections": {
             "name": "incidence_new_infections",
             "color": "red",
-            "value": 68.4,
-            "date": "2021-02-07"
+            "value": 70,
+            "date": "2021-02-08"
         }
     },
     "source": "https:\/\/www.hamburg.de\/corona-zahlen\/",
