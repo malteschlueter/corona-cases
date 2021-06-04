@@ -12,8 +12,9 @@ $finder = Finder::create()
     ])
 ;
 
-return Config::create()
+return (new Config())
     ->setFinder($finder)
+    ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
@@ -34,5 +35,4 @@ return Config::create()
         'phpdoc_order' => true,
         'visibility_required' => ['elements' => ['property', 'method', 'const']],
     ])
-    ->setRiskyAllowed(true)
 ;

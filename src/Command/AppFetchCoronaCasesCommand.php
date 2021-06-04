@@ -41,7 +41,7 @@ final class AppFetchCoronaCasesCommand extends Command
             $jsonData = $this->serializer->serialize(
                 $data,
                 JsonEncoder::FORMAT,
-                [JsonEncode::OPTIONS => JSON_PRETTY_PRINT]
+                [JsonEncode::OPTIONS => \JSON_PRETTY_PRINT]
             );
 
             $filename = sprintf('%s/%s.latest.json', $this->dataPath, $scraper->getId());

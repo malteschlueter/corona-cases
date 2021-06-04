@@ -23,9 +23,7 @@ final class DecoratingObjectNormalizer extends ObjectNormalizer
         callable $objectClassResolver = null,
         array $defaultContext = []
     ) {
-        $dateCallback = static function (\DateTimeImmutable $dateTime): string {
-            return $dateTime->format('Y-m-d');
-        };
+        $dateCallback = static fn (\DateTimeImmutable $dateTime): string => $dateTime->format('Y-m-d');
 
         $defaultContext[AbstractNormalizer::CALLBACKS] = [
             'date' => $dateCallback,
