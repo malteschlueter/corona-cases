@@ -1,19 +1,25 @@
+.PHONY: help
 help: ## Shows this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\-\.]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-init: ## Install composer and yarn dependencies, build frontend assets
+.PHONY: init
+init: ## Install composer dependencies
 	composer install
-	composer --working-dir=tools/php-cs-fixer install
+	composer install --working-dir=dev-ops/ci
 
-update: ## Update composer and yarn dependencies
+.PHONY: update
+update: ## Update composer dependencies
 	composer update
-	composer --working-dir=tools/php-cs-fixer update
+	composer update --working-dir=dev-ops/ci
 
-cs-fix: ## Run php-cs-fixer
-	PHP_CS_FIXER_IGNORE_ENV=1 php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix
+.PHONY: cs-fixer
+cs-fixer: ## Run php-cs-fixer
+	php dev-ops/ci/vendor/bin/php-cs-fixer fix  --config=dev-ops/ci/config/.php-cs-fixer.dist.php
 
-phpstan: ## Run phpstan
-	php vendor/bin/phpstan analyze
+.PHONY: stan
+stan: ## Run phpstan
+	php dev-ops/ci/vendor/bin/phpstan analyse --configuration=dev-ops/ci/config/phpstan.neon.dist
 
-phpunit: ## Run phpunit with coverage
-	php bin/phpunit --coverage-html=var/phpunit-coverage
+.PHONY: unit
+unit: ## Run phpunit
+	php bin/phpunit --configuration dev-ops/ci/config/phpunit.xml.dist

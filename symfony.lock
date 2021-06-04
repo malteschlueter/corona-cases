@@ -11,15 +11,6 @@
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
     },
-    "phpstan/extension-installer": {
-        "version": "1.1.0"
-    },
-    "phpstan/phpstan": {
-        "version": "0.12.66"
-    },
-    "phpstan/phpstan-symfony": {
-        "version": "0.12.14"
-    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -159,6 +150,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.0"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
     },
     "symfony/property-access": {
         "version": "v5.2.1"

@@ -3,9 +3,13 @@
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
+$projectDir = dirname(__DIR__, 3);
+
 $finder = Finder::create()
     ->in([
-        __DIR__,
+        $projectDir . '/config',
+        $projectDir . '/src',
+        $projectDir . '/tests',
     ])
     ->exclude([
         'var',
@@ -14,6 +18,7 @@ $finder = Finder::create()
 
 return (new Config())
     ->setFinder($finder)
+    ->setCacheFile(dirname(__DIR__) . '/cache/.php-cs-fixer.cache')
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,

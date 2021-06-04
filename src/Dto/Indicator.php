@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
+use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+
 final class Indicator
 {
     private const COLOR_GREEN = 'green';
@@ -14,6 +17,7 @@ final class Indicator
         public string $name,
         public string $color,
         public float $value,
+        #[Serializer\Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
         public ?\DateTimeImmutable $date = null
     ) {
     }
