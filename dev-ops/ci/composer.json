@@ -1,0 +1,22 @@
+{
+    "name": "malteschlueter/corona-cases-dev-ops",
+    "description": "",
+    "type": "project",
+    "license": "proprietary",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^0.12.66",
+        "phpstan/phpstan-symfony": "^0.12.14",
+        "symfony/phpunit-bridge": "^5.2"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    }
+}

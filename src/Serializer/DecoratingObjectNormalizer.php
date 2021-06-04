@@ -14,6 +14,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 final class DecoratingObjectNormalizer extends ObjectNormalizer
 {
+    /**
+     * @param array<mixed> $defaultContext
+     */
     public function __construct(
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,

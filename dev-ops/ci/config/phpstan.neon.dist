@@ -1,0 +1,10 @@
+parameters:
+    scanDirectories:
+        - %currentWorkingDirectory%/src/
+    bootstrapFiles:
+        - %currentWorkingDirectory%/vendor/autoload.php
+
+    tmpDir: %currentWorkingDirectory%/dev-ops/ci/cache/phpstan
+    level: max
+    paths:
+        - %currentWorkingDirectory%/src/
