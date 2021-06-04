@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dto;
 
 final class Indicator
@@ -13,7 +15,8 @@ final class Indicator
         public string $color,
         public float $value,
         public ?\DateTimeImmutable $date = null
-    ) {}
+    ) {
+    }
 
     public static function createIncidenceNewInfections(float $value, \DateTimeImmutable $date): self
     {
