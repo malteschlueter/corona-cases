@@ -10,9 +10,6 @@ services:
         bind:
             $cacheDir: '%kernel.cache_dir%'
             $projectDir: '%kernel.project_dir%'
-    _instanceof:
-        App\Scraper\Scraper:
-            tags: ['app.scraper']
 
     App\:
         resource: '../src/'
@@ -22,15 +19,9 @@ services:
 
     App\Command\AppFetchCoronaCasesCommand:
         arguments:
-            $scraper: !tagged_iterator 'app.scraper'
             $dataPath: '%app.corona_data_path%'
 
     App\HttpClient\CacheClient:
         arguments:
             $cacheResponse: '%app.content_fetcher.cache_response%'
             $cachePath: '%app.content_fetcher.cache_path%'
-
-    App\Serializer\DecoratingObjectNormalizer:
-        decorates: 'serializer.normalizer.object'
-        arguments:
-            $nameConverter: '@serializer.name_converter.camel_case_to_snake_case'

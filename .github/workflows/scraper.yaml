@@ -31,9 +31,6 @@ jobs:
             -   name: Install php dependencies
                 run: composer install --optimize-autoloader --no-dev --prefer-dist --no-progress
 
-            -   name: Clear cache
-                run: php bin/console cache:clear
-
             -   name: Scrap corona cases
                 run: php bin/console app:fetch-corona-cases
 
