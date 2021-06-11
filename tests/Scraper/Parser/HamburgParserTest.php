@@ -21,7 +21,7 @@ class HamburgParserTest extends TestCase
 
         $expectedData = $this->getExpectedData();
 
-        $data = new Data('foo', new \DateTimeImmutable('2021-01-11'));
+        $data = new Data('foo');
         $parser->parse($data, $fixtureContent);
 
         $this->assertEquals($expectedData, $data);
@@ -29,7 +29,7 @@ class HamburgParserTest extends TestCase
 
     private function getExpectedData(): Data
     {
-        $data = new Data('foo', new \DateTimeImmutable('2021-01-11'));
+        $data = new Data('foo');
 
         $incidenceIndicator = Indicator::createIncidenceNewInfections(162.3, new \DateTimeImmutable('2021-01-11'));
         $data->addIndicator($incidenceIndicator);
