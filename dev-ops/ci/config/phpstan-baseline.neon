@@ -3,10 +3,5 @@ parameters:
 		-
 			message: "#^Attribute class Symfony\\\\Component\\\\Serializer\\\\Annotation\\\\Context does not have the parameter target\\.$#"
 			count: 1
-			path: ../../../src/Dto/Data.php
-
-		-
-			message: "#^Attribute class Symfony\\\\Component\\\\Serializer\\\\Annotation\\\\Context does not have the parameter target\\.$#"
-			count: 1
 			path: ../../../src/Dto/Indicator.php
 

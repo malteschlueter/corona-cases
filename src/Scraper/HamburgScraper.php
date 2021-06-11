@@ -26,7 +26,7 @@ class HamburgScraper implements Scraper
 
     public function scrap(): Data
     {
-        $data = new Data(self::URL, new \DateTimeImmutable());
+        $data = new Data(self::URL);
         $content = $this->client->request($data->source);
 
         $this->parser->parse($data, $content);
