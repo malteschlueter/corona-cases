@@ -3,8 +3,8 @@
         "incidence_new_infections": {
             "name": "incidence_new_infections",
             "color": "green",
-            "value": 14,
-            "date": "2021-07-18"
+            "value": 15.4,
+            "date": "2021-07-19"
         }
     },
     "source": "https:\/\/www.hamburg.de\/corona-zahlen\/"
