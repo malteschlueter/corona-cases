@@ -2,9 +2,9 @@
     "indicators": {
         "incidence_new_infections": {
             "name": "incidence_new_infections",
-            "color": "yellow",
-            "value": 29.4,
-            "date": "2021-07-26"
+            "color": "red",
+            "value": 30.6,
+            "date": "2021-07-27"
         }
     },
     "source": "https:\/\/www.hamburg.de\/corona-zahlen\/"
