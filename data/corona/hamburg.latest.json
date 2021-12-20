@@ -3,8 +3,8 @@
         "incidence_new_infections": {
             "name": "incidence_new_infections",
             "color": "red",
-            "value": 314.4,
-            "date": "2021-12-19"
+            "value": 308.5,
+            "date": "2021-12-20"
         }
     },
     "source": "https:\/\/www.hamburg.de\/corona-zahlen\/"
