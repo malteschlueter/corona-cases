@@ -9,8 +9,8 @@ on:
             - 'main'
         types:
             - 'completed'
-    schedule:
-        - cron: '7 * * * *'
+#    schedule:
+#        - cron: '7 * * * *'
 
 jobs:
     scrap-data:
