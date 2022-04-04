@@ -1,7 +1,7 @@
 name: Tests
 
 env:
-    php_version: '8.0'
+    php_version: '8.1'
 
 on:
     push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
     build:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         steps:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -21,30 +21,23 @@ jobs:
             -   name: Validate composer.json and composer.lock
                 run: composer validate
 
-            -   name: Cache Composer packages
+            -   name: Get Composer Cache Directory
                 id: composer-cache
-                uses: actions/cache@v2
+                run: |
+                    echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -   name: Cache Composer packages
+                uses: actions/cache@v3
                 with:
-                    path: vendor
-                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
                     restore-keys: |
-                        ${{ runner.os }}-php-
+                        ${{ runner.os }}-composer-
 
             -   name: Install php dependencies
-                if: steps.composer-cache.outputs.cache-hit != 'true'
                 run: composer install --prefer-dist --no-progress
 
-            -   name: Cache Composer Ci packages
-                id: composer-ci-cache
-                uses: actions/cache@v2
-                with:
-                    path: dev-ops/ci/vendor
-                    key: ${{ runner.os }}-php-ci-${{ hashFiles('**/composer.lock') }}
-                    restore-keys: |
-                        ${{ runner.os }}-php-ci-
-
             -   name: Install php ci dependencies
-                if: steps.composer-ci-cache.outputs.cache-hit != 'true'
                 run: composer install --working-dir=dev-ops/ci --prefer-dist --no-progress
 
             -   name: Install phpunit
@@ -68,7 +61,7 @@ jobs:
                     retention-days: 1
 
     lint:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         needs: build
         steps:
             -   name: Setup PHP
@@ -91,7 +84,7 @@ jobs:
                 run: php bin/console lint:yaml config --parse-tags
 
     php-cs-fixer:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         needs: build
         steps:
             -   name: Setup PHP
@@ -111,7 +104,7 @@ jobs:
                 run: php dev-ops/ci/vendor/bin/php-cs-fixer fix --config=dev-ops/ci/config/.php-cs-fixer.dist.php --dry-run
 
     phpstan:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         needs: build
         steps:
             -   name: Setup PHP
@@ -128,10 +121,10 @@ jobs:
                 run: tar -xzf application.tar.gz --strip=1
 
             -   name: Run phpstan
-                run: php dev-ops/ci/vendor/bin/phpstan analyze --configuration=dev-ops/ci/config/phpstan.neon.dist
+                run: php -d memory_limit=-1 dev-ops/ci/vendor/bin/phpstan analyze --configuration=dev-ops/ci/config/phpstan.neon.dist
 
     phpunit:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         needs: build
         steps:
             -   name: Setup PHP

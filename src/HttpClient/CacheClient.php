@@ -9,12 +9,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class CacheClient
 {
-    private Filesystem $filesystem;
+    private readonly Filesystem $filesystem;
 
     public function __construct(
-        private HttpClientInterface $client,
-        private string $cachePath,
-        private bool $cacheResponse
+        private readonly HttpClientInterface $client,
+        private readonly string $cachePath,
+        private readonly bool $cacheResponse
     ) {
         $this->filesystem = new Filesystem();
     }

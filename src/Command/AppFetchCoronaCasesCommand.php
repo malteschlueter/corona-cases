@@ -26,9 +26,9 @@ final class AppFetchCoronaCasesCommand extends Command
      */
     public function __construct(
         #[TaggedIterator('app.scraper')]
-        private iterable $scraper,
-        private SerializerInterface $serializer,
-        private string $dataPath
+        private readonly iterable $scraper,
+        private readonly SerializerInterface $serializer,
+        private readonly string $dataPath
     ) {
         parent::__construct();
     }
@@ -56,6 +56,6 @@ final class AppFetchCoronaCasesCommand extends Command
 
         $io->success('Fetched corona cases successful.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -14,8 +14,8 @@ class HamburgScraper implements Scraper
     private const URL = 'https://www.hamburg.de/corona-zahlen/';
 
     public function __construct(
-        private CacheClient $client,
-        private HamburgParser $parser
+        private readonly CacheClient $client,
+        private readonly HamburgParser $parser
     ) {
     }
 
