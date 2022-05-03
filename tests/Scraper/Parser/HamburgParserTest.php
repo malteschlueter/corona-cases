@@ -31,7 +31,7 @@ class HamburgParserTest extends TestCase
     {
         $data = new Data('foo');
 
-        $incidenceIndicator = Indicator::createIncidenceNewInfections(162.3, new \DateTimeImmutable('2021-01-11'));
+        $incidenceIndicator = Indicator::createIncidenceNewInfections(885.7, new \DateTimeImmutable('2022-05-03'));
         $data->addIndicator($incidenceIndicator);
 
         return $data;

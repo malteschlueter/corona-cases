@@ -14,31 +14,51 @@ final class HamburgParser implements Parser
     {
         $crawler = new Crawler($content);
 
-        $incidenceElements = $crawler->filter('.teaser-text.c_chartheadline');
+        $incidenceElements = $crawler->filter('[data-label="Zahlen"]');
 
         $incidenceIndicator = null;
         foreach ($incidenceElements as $element) {
-            if (str_starts_with($element->textContent, 'Bei der Inzidenz wird die Anzahl')) {
-                $incidenceValues = (new Crawler($element))->filter('strong');
+            if ('7-Tage-Inzidenz' === $element->textContent) {
+                $incidenceValueAndDate = (new Crawler($element))->siblings();
+                $incidenceValueElement = $incidenceValueAndDate->filter('[data-label="Wert"]')->first();
+                $incidenceDateElement = $incidenceValueAndDate->filter('[data-label="Stand"]')->first();
 
-                $incidenceValue = (float) str_replace(',', '.', $incidenceValues->first()->text());
-                $incidenceDateString = str_replace(['(', ')'], '', $incidenceValues->last()->text());
-                $incidenceDate = \DateTimeImmutable::createFromFormat('d.m.Y', $incidenceDateString);
+                match (true) {
+                    0 === $incidenceValueElement->count() => throw $this->createException('Value not found.'),
+                    0 === $incidenceDateElement->count() => throw $this->createException('Date not found.'),
+                    default => null,
+                };
+
+                $incidenceValue = (float) str_replace(',', '.', $incidenceValueElement->text());
+                $incidenceDate = \DateTimeImmutable::createFromFormat('d.m.Y', $incidenceDateElement->text());
                 if (!$incidenceDate instanceof \DateTimeImmutable) {
-                    throw new \RuntimeException('Incidence not parsable.');
+                    throw $this->createException('Date not formattable.');
                 }
                 $incidenceDate = $incidenceDate->setTime(0, 0);
 
                 $incidenceIndicator = Indicator::createIncidenceNewInfections($incidenceValue, $incidenceDate);
+
+                break;
             }
         }
 
         if (null === $incidenceIndicator) {
-            throw new \RuntimeException('Incidence not parsable.');
+            throw $this->createException();
         }
 
         $data->addIndicator($incidenceIndicator);
 
         return $data;
+    }
+
+    private function createException(?string $reason = null): \RuntimeException
+    {
+        $message = 'Incidence with ' . __CLASS__ . ' is not parsable.';
+
+        if (null !== $reason) {
+            $message .= ' ' . $reason;
+        }
+
+        return new \RuntimeException($message);
     }
 }
