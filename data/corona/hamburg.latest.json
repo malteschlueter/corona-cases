@@ -3,8 +3,8 @@
         "incidence_new_infections": {
             "name": "incidence_new_infections",
             "color": "red",
-            "value": 380.37,
-            "date": "2022-08-02"
+            "value": 309.2,
+            "date": "2022-08-09"
         }
     },
     "source": "https:\/\/www.hamburg.de\/corona-zahlen\/"
