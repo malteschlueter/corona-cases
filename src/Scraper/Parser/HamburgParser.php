@@ -17,8 +17,9 @@ final class HamburgParser implements Parser
         $incidenceElements = $crawler->filter('[data-label="Zahlen"]');
 
         $incidenceIndicator = null;
+
         foreach ($incidenceElements as $element) {
-            if ('7-Tage-Inzidenz' === $element->textContent) {
+            if ('6-Tage-Inzidenz' === $element->textContent) {
                 $incidenceValueAndDate = (new Crawler($element))->siblings();
                 $incidenceValueElement = $incidenceValueAndDate->filter('[data-label="Wert"]')->first();
                 $incidenceDateElement = $incidenceValueAndDate->filter('[data-label="Stand"]')->first();
