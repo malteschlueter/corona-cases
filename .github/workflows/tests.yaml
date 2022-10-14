@@ -46,19 +46,12 @@ jobs:
             -   name: Clear cache
                 run: php bin/console cache:clear
 
-            -   name: Archive application
-                working-directory: ../
-                run: |
-                    tar -czf application.tar.gz --exclude=".git" --exclude="node_modules" -C ${{ github.workspace }} .
-                    mv application.tar.gz ${{ github.workspace }}/
-
-            -   name: Upload prepared application
-                uses: actions/upload-artifact@v2
+            -   name: Store build
+                uses: actions/cache@v3
+                id: restore-build
                 with:
-                    name: applicationArchive
-                    path: application.tar.gz
-                    if-no-files-found: error
-                    retention-days: 1
+                    path: ./*
+                    key: ${{ github.sha }}
 
     lint:
         runs-on: ubuntu-20.04
@@ -69,13 +62,12 @@ jobs:
                 with:
                     php-version: ${{ env.php_version }}
 
-            -   name: Download prepared application
-                uses: actions/download-artifact@v2
+            -   name: Restore build
+                uses: actions/cache@v3
+                id: restore-build
                 with:
-                    name: applicationArchive
-
-            -   name: Unpack application
-                run: tar -xzf application.tar.gz --strip=1
+                    path: ./*
+                    key: ${{ github.sha }}
 
             -   name: Validate container
                 run: php bin/console lint:container
@@ -92,13 +84,12 @@ jobs:
                 with:
                     php-version: ${{ env.php_version }}
 
-            -   name: Download prepared application
-                uses: actions/download-artifact@v2
+            -   name: Restore build
+                uses: actions/cache@v3
+                id: restore-build
                 with:
-                    name: applicationArchive
-
-            -   name: Unpack application
-                run: tar -xzf application.tar.gz --strip=1
+                    path: ./*
+                    key: ${{ github.sha }}
 
             -   name: Run php-cs-fixer
                 run: php dev-ops/ci/vendor/bin/php-cs-fixer fix --config=dev-ops/ci/config/.php-cs-fixer.dist.php --dry-run
@@ -112,13 +103,12 @@ jobs:
                 with:
                     php-version: ${{ env.php_version }}
 
-            -   name: Download prepared application
-                uses: actions/download-artifact@v2
+            -   name: Restore build
+                uses: actions/cache@v3
+                id: restore-build
                 with:
-                    name: applicationArchive
-
-            -   name: Unpack application
-                run: tar -xzf application.tar.gz --strip=1
+                    path: ./*
+                    key: ${{ github.sha }}
 
             -   name: Run phpstan
                 run: php -d memory_limit=-1 dev-ops/ci/vendor/bin/phpstan analyze --configuration=dev-ops/ci/config/phpstan.neon.dist
@@ -132,29 +122,12 @@ jobs:
                 with:
                     php-version: ${{ env.php_version }}
 
-            -   name: Download prepared application
-                uses: actions/download-artifact@v2
+            -   name: Restore build
+                uses: actions/cache@v3
+                id: restore-build
                 with:
-                    name: applicationArchive
-
-            -   name: Unpack application
-                run: tar -xzf application.tar.gz --strip=1
+                    path: ./*
+                    key: ${{ github.sha }}
 
             -   name: Run test suite
                 run: php bin/phpunit --configuration dev-ops/ci/config/phpunit.xml.dist
-
-    cleanup:
-        runs-on: ubuntu-latest
-        needs:
-            - build
-            - lint
-            - php-cs-fixer
-            - phpstan
-            - phpunit
-        if: ${{ always() }}
-        steps:
-            -   name: Delete unecessary artifacts
-                uses: geekyeggo/delete-artifact@v1
-                with:
-                    name: applicationArchive
-                    failOnError: false
